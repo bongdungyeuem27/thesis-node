@@ -1,6 +1,10 @@
 import multipath from "@fastify/multipart";
 import fastify from "fastify";
 import routes from "~routes/index";
+import { initRuntime } from "./configs";
+import { mongoServer } from "~configs/mongo";
+
+initRuntime();
 
 const app = fastify({
   logger: {
@@ -26,6 +30,7 @@ await Promise.all([
     },
   }),
   app.register(routes),
+  mongoServer(),
 ]);
 
 app.listen({ port: Number(process.env.PORT) || 4000, host: process.env.HOST }, (err, address) => {
